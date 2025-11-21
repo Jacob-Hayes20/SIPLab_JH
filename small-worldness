@@ -19,10 +19,8 @@ class SmallWorldnessAnalyzer:
         return G.subgraph(largest_cc).copy()
 
     def calculate_small_worldness_metrics(self, G):
-        """
-        Calculate direct small-worldness metrics without random network comparisons
-        Returns: clustering coefficient and characteristic path length
-        """
+        """Calculate direct small-worldness metrics without random network comparisons
+        Returns: clustering coefficient and characteristic path length """
         try:
             # Check if graph has enough nodes and edges
             if G.number_of_nodes() < 5 or G.number_of_edges() == 0:
@@ -45,9 +43,7 @@ class SmallWorldnessAnalyzer:
             return 0.0, 0.0, 0, 0
 
     def extract_connectivity_matrix(self, synapses, N_neurons=None):
-        """
-        Extract adjacency matrix from Brian2 Synapses object
-        """
+        """Extract adjacency matrix from Brian2 Synapses object"""
         try:
             # Get source and target indices
             i_idx = synapses.i[:]  # pre-synaptic neurons
@@ -74,9 +70,7 @@ class SmallWorldnessAnalyzer:
             return None
 
     def matrix_to_graph(self, connectivity_matrix):
-        """
-        Convert adjacency matrix to NetworkX graph
-        """
+        """ Convert adjacency matrix to NetworkX graph"""
         if connectivity_matrix is None:
             return nx.Graph()
         try:
@@ -254,36 +248,4 @@ class SmallWorldnessAnalyzer:
             print(f"\n{i+1}. {metrics['description']}:")
             print(f"   C = {metrics['clustering_coefficient']:.3f}, L = {metrics['characteristic_path_length']:.3f}")
             print(f"   Nodes: {metrics['n_nodes']}, Edges: {metrics['n_edges']}, Density: {metrics['density']:.4f}")
-
-
-# Example usage function
-def analyze_trained_network(synapses_object, N_neurons, network_name="Trained fSNN"):
-    """
-    Function to analyze a trained fSNN network
-    
-    Parameters:
-    - synapses_object: Brian2 Synapses object from trained network
-    - N_neurons: Number of neurons in the network
-    - network_name: Descriptive name for the analysis
-    """
-    analyzer = SmallWorldnessAnalyzer()
-    
-    # Analyze the network
-    metrics = analyzer.analyze_network(
-        synapses=synapses_object,
-        N_neurons=N_neurons,
-        description=network_name
-    )
-    
-    # Plot results
-    analyzer.plot_network_analysis(
-        synapses=synapses_object,
-        N_neurons=N_neurons,
-        title=network_name
-    )
-    
-    # Print summary
-    analyzer.print_summary()
-    
-    return analyzer, metrics
 
